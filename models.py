@@ -51,7 +51,3 @@ class Cupcake(db.Model):
             "rating": self.rating,
             "image": self.image if self.image else DEFAULT_IMAGE
         }
-
-# q: i got a key error when i didnt include the image in a post request. why?
-# a: because the image is set to default in the model, but not in the post request. so it's not in the request.json. so it's not in the dictionary. so it's not in the serialize method.
-# q: how can i fix this?

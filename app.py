@@ -16,6 +16,15 @@ debug = DebugToolbarExtension(app)
 connect_db(app)
 
 
+@app.route('/')
+def show_homepage():
+    """Show homepage."""
+
+    return render_template("index.html")
+
+############################## API ROUTES #############################
+
+
 @app.route('/api/cupcakes')
 def all_cupcakes():
     """Get data about all cupcakes."""
@@ -40,4 +49,27 @@ def get_cupcake(id):
     """Get data about a single cupcake."""
 
     cupcake = Cupcake.query.get_or_404(id)
+    return jsonify(cupcake=cupcake.serialize())
+
+
+@app.route('/api/cupcakes/<int:id>', methods=["PATCH"])
+def update_cupcake(id):
+    """Update a cupcake with the id passed in the URL and flavor, size, rating and image data from the body of the request. Returns JSON of the updated cupcake."""
+
+    cupcake = Cupcake.query.get_or_404(id)
+    cupcake.flavor = request.json["flavor"]
+    cupcake.size = request.json["size"]
+    cupcake.rating = request.json["rating"]
+    cupcake.image = request.json["image"]
+    db.session.commit()
+    return jsonify(cupcake=cupcake.serialize())
+
+
+@app.route('/api/cupcakes/<int:id>', methods=["DELETE"])
+def delete_cupcake(id):
+    """Delete a cupcake with the id passed in the URL. Returns JSON of the deleted cupcake."""
+
+    cupcake = Cupcake.query.get_or_404(id)
+    db.session.delete(cupcake)
+    db.session.commit()
     return jsonify(cupcake=cupcake.serialize())
