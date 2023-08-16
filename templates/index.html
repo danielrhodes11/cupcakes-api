@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/style.css">
     <title>Cupcakes</title>
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Cupcakes</h1>
 
-        <ul id="cupcakes-list" class="list-group"></ul>
+        <ul id="cupcakes-list" class="list-group mb-4"></ul>
 
         <form id="add-cupcake-form" class="mt-4">
             <div class="form-group">
@@ -30,7 +31,7 @@
 
             <div class="form-group">
                 <label for="image">Image URL:</label>
-                <input type="text" id="image" name="image" class="form-control" placeholder="Image URL">
+                <input type="url" id="image" name="image" class="form-control" placeholder="Image URL">
             </div>
 
             <button type="submit" class="btn btn-primary">Add Cupcake</button>

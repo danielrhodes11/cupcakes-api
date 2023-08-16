@@ -2,12 +2,20 @@ function fetchAndRenderCupcakes() {
     axios.get('/api/cupcakes')
         .then(response => {
             const cupcakes = response.data.cupcakes;
-            const cupcakeList = document.getElementById('cupcake-list');
+            const cupcakeList = document.getElementById('cupcakes-list');
             cupcakeList.innerHTML = '';
 
             cupcakes.forEach(cupcake => {
                 const listItem = document.createElement('li');
-                listItem.textContent = `${cupcake.flavor} - Size: ${cupcake.size}, Rating: ${cupcake.rating}`;
+                listItem.textContent = `Flavor: ${cupcake.flavor} - Size: ${cupcake.size}, Rating: ${cupcake.rating}`;
+
+                if (cupcake.image) {
+                    const image = document.createElement('img');
+                    image.src = cupcake.image;
+                    image.alt = `Image of ${cupcake.flavor} Cupcake`;
+                    listItem.appendChild(image);
+                }
+
                 cupcakeList.appendChild(listItem);
             });
         })
@@ -15,6 +23,7 @@ function fetchAndRenderCupcakes() {
             console.error('Error fetching cupcakes:', error);
         });
 }
+
 
 // Fetch cupcakes and render them when the page loads
 fetchAndRenderCupcakes();
@@ -33,11 +42,10 @@ document.getElementById('add-cupcake-form').addEventListener('submit', function 
     axios.post('/api/cupcakes', formData)
         .then(response => {
             console.log('Cupcake added:', response.data.cupcake);
-            fetchAndRenderCupcakes(); // Fetch and render cupcakes after adding a new one
+            fetchAndRenderCupcakes();
         })
         .catch(error => {
             console.error('Error adding cupcake:', error);
         });
 });
-
 
