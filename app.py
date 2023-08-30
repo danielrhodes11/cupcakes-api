@@ -3,13 +3,20 @@
 from flask import Flask, request, jsonify, render_template
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Cupcake
+import config
+
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = "secret"
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///cupcakes"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+app.config.from_object(config.prod_config.Config)
+
+# Check if unittest is running and load test_config
+if 'unittest' in config.sys.modules.keys():
+    app.config.from_object(config.test_config.TestConfig)
+
+# Check if FLASK_ENVIRONMENT is set to development and load dev_config
+if config.os.getenv('FLASK_ENVIRONMENT') == 'development':
+    app.config.from_object(config.dev_config.DevConfig)
 
 debug = DebugToolbarExtension(app)
 
